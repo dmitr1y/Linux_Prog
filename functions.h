@@ -10,30 +10,33 @@
 #include <zconf.h>
 #include <pwd.h>
 #include "time.h"
+#include <sys/vfs.h>
 
 
 #ifndef ALCO_FUNCTIONS_H
 #define ALCO_FUNCTIONS_H
 void showDiscs(){
-    // метод
-//    //system("fdisk -l | grep sda");
-//    struct statfs vfs;
-//    char path[] = "/";
-//    if (statfs(path, &vfs) != 0) {
-//        fprintf(stderr, "%s: statfs failed: %s\n",
-//                "/", strerror(errno));
-//        exit(0);
-//    }
-//
-//    printf("mounted on %s:\n",path);
-//
-//    printf("\tf_bsize: %ld\n", vfs.f_bsize);
-//    printf("\tf_blocks: %ld\n", vfs.f_blocks);
-//    printf("\tf_bfree: %ld\n", vfs.f_bfree);
-//    printf("\tf_bavail: %ld\n", vfs.f_bavail);
-//    printf("\tf_files: %ld\n", vfs.f_files);
-//    printf("\tf_ffree: %ld\n", vfs.f_ffree);
-//    printf("------------------------------\n");
+    // метод для штатных инструментов оболочки
+    system("fdisk -l | grep sda");
+
+    printf("\n");
+    struct statfs vfs;
+    char path[] = "/";
+    if (statfs(path, &vfs) != 0) {
+        fprintf(stderr, "%s: statfs failed: %s\n",
+                "/", strerror(errno));
+        exit(0);
+    }
+
+    printf("mounted on %s:\n",path);
+
+    printf("\tf_bsize: %ld\n", vfs.f_bsize);
+    printf("\tf_blocks: %ld\n", vfs.f_blocks);
+    printf("\tf_bfree: %ld\n", vfs.f_bfree);
+    printf("\tf_bavail: %ld\n", vfs.f_bavail);
+    printf("\tf_files: %ld\n", vfs.f_files);
+    printf("\tf_ffree: %ld\n", vfs.f_ffree);
+    printf("------------------------------\n");
 
 
 
