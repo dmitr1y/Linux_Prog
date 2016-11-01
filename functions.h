@@ -119,7 +119,7 @@ int  getFileAttribute(){
     strcat(date2,str);
     system(date2);
     printf("Unix time\t\t%d\t",fileStat.st_ctim.tv_sec);
-    printf("\n-------------------------------\n");git
+    printf("\n-------------------------------\n");
 
 
     printf("File Permissions: \t");
