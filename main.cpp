@@ -1,6 +1,5 @@
 
 #include "functions.h"
-#include <stdio.h>
 int main() {
     //while(){
     printf("Выберите пункт меню\n\n");
@@ -9,6 +8,7 @@ int main() {
     printf("3\t Создать дерикторию\n");
     printf("4\t Удалить дерикторию\n");
     printf("5\t Получить сведения  о файле\n");
+    printf("6\t Изменить права доступа к файлу\n");
     printf("Введие номер выбранного пункта: ");
     char userChose;
     scanf("%c",&userChose);
@@ -28,6 +28,9 @@ int main() {
             break;
         case '5':
             getFileAttribute();
+            break;
+        case '6':
+            changeAttributeAcces();
             break;
         case '0':
             exit(1);

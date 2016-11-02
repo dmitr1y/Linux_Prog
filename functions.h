@@ -11,7 +11,7 @@
 #include <pwd.h>
 #include "time.h"
 #include <sys/vfs.h>
-
+#include <sys/types.h>
 
 #ifndef ALCO_FUNCTIONS_H
 #define ALCO_FUNCTIONS_H
@@ -143,5 +143,15 @@ int  getFileAttribute(){
     return 0;
 }
 
+//смена атрибутуво доступа
+void changeAttributeAcces(){
+
+    int result;
+    //
+    result= chmod("/home/ilya-kulakov/WorkSpace/testfile",S_IREAD|S_IWRITE);
+    if (result==-1)
+        perror("can't change file mode");
+    touch
+}
 
 #endif //ALCO_FUNCTIONS_H
