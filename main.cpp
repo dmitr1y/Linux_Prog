@@ -31,6 +31,8 @@ int main() {
             break;
         case '6':
             changeAttributeAcces();
+        case '7':
+            setFileTime();
             break;
         case '0':
             exit(1);

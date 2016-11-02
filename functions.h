@@ -12,6 +12,8 @@
 #include "time.h"
 #include <sys/vfs.h>
 #include <sys/types.h>
+#include <time.h>
+#include <utime.h>
 
 #ifndef ALCO_FUNCTIONS_H
 #define ALCO_FUNCTIONS_H
@@ -105,21 +107,21 @@ int  getFileAttribute(){
 
 
     printf("  Last modification time                 \n");
-    a = fileStat.st_atim.tv_sec;
+    a = fileStat.st_mtim.tv_sec;
     char str1[10];
     sprintf(str1,"%d",a);
     char date1[19] = "date -d @";
-    strcat(date1,str);
+    strcat(date1,str1);
     system(date1);
     printf("Unix time\t\t%d\t",fileStat.st_mtim.tv_sec);
     printf("\n-------------------------------\n");
 
     printf("  Last attribute modification time                 \n");
-    a = fileStat.st_atim.tv_sec;
+    a = fileStat.st_ctim.tv_sec;
     char str2[10];
     sprintf(str2,"%d",a);
     char date2[19] = "date -d @";
-    strcat(date2,str);
+    strcat(date2,str2);
     system(date2);
     printf("Unix time\t\t%d\t",fileStat.st_ctim.tv_sec);
     printf("\n-------------------------------\n");
@@ -151,7 +153,19 @@ void changeAttributeAcces(){
     result= chmod("/home/ilya-kulakov/WorkSpace/testfile",S_IREAD|S_IWRITE);
     if (result==-1)
         perror("can't change file mode");
-    touch
 }
 
+
+void setFileTime(){
+    struct stat testfile;
+    struct utimbuf new_times;
+
+    stat("/home/ilya-kulakov/WorkSpace/testfile", &testfile);
+
+    new_times.actime = testfile.st_atime - 10*72008; // тут  нужно задавать насколько секунд +/- изменить время.
+    new_times.modtime = time(NULL);
+    utime("/home/ilya-kulakov/WorkSpace/testfile", &new_times);
+
+
+}
 #endif //ALCO_FUNCTIONS_H
