@@ -165,7 +165,10 @@ void setFileTime(){
     new_times.actime = testfile.st_atime - 10*72008; // тут  нужно задавать насколько секунд +/- изменить время.
     new_times.modtime = time(NULL);
     utime("/home/ilya-kulakov/WorkSpace/testfile", &new_times);
+}
 
 
+void forkThisProc(){
+    printf("Новый процесс создан");
 }
 #endif //ALCO_FUNCTIONS_H
