@@ -17,6 +17,49 @@
 
 #ifndef ALCO_FUNCTIONS_H
 #define ALCO_FUNCTIONS_H
+
+bool checkCharPathValid(char *path) {
+    char restrictedChar[] = "\|*:?><\"";
+    printf("%s%d", "size: ", sizeof(path));
+    for (int i = 0; i < strlen(path); ++i) {
+        for (int j = 0; j < strlen(restrictedChar); ++j) {
+            if (path[i] == restrictedChar[j])
+                return false;
+        }
+    }
+    return true;
+}
+
+char *readFilePath() {
+    char *path = (char *) malloc(1);
+    int i = 0;
+    bool isFirst = true;
+    scanf("%c", &path[i]);
+    if (path[i] == '\n')
+        //очистка лишнего символа из stdin
+        scanf("%c", &path[i]);
+    while (path[i] != '\n') {
+        if (isFirst) {
+            if (path[i] != '/') {
+                printf("\n%s\n", "wrong path! / - not founded.\n");
+                return nullptr;
+            }
+            isFirst = false;
+        }
+        path = (char *) realloc(path, (i + 2) * sizeof(char));
+        i++;
+        scanf("%c", &path[i]);
+    }
+    path[i] = '\0';
+    printf("inputed path: %s\n", path);
+    if (checkCharPathValid(path))
+        return path;
+    else {
+        free(path);
+        return nullptr;
+    }
+}
+
 void showDiscs(){
     // метод для штатных инструментов оболочки
     system("fdisk -l | grep sda");
@@ -57,11 +100,11 @@ void showDiscs(){
 void createFile(){
     char info[50];
     int fdr;
-    int rc = mknod("/home/ilya-kulakov/WorkSpace/testfile",'b',0);
+    int rc = mknod(readFilePath(),'b',0);
     if(rc<0) {
         perror("Error in mknod");
     }
-    fdr=open("/home/ilya-kulakov/WorkSpace/testfile",O_RDONLY);
+    fdr=open(readFilePath(),O_RDONLY);
     read(fdr,info,50);
   //  printf("\n Received message=%s",info);
     printf("\nDone\n");
@@ -69,20 +112,21 @@ void createFile(){
 
 //создание новой директории
 void makeFolder(){
-    mkdir("/home/ilya-kulakov/WorkSpace/testFolder",777);
+    mkdir(readFilePath(),777);
 }
 
 //удаление директории
 void removeFolder(){
-    rmdir("/home/ilya-kulakov/WorkSpace/testFolder");
+    rmdir(readFilePath());
 }
 
 //Получает атрибуты файла, в том числе время обращения, записи и т.д.
 int  getFileAttribute(){
     struct stat fileStat;
-    if(stat("/home/ilya-kulakov/WorkSpace/testfile",&fileStat) < 0)
+    char *path=readFilePath();
+    if(stat(path,&fileStat) < 0)
         return 1;
-    printf("Information for %s\n", "testFile");
+    printf("Information for %s\n", path);
     printf("---------------------------\n");
     printf("File Size: \t\t%d bytes\n",fileStat.st_size);
     printf("Number of Links: \t%d\n",fileStat.st_nlink);
@@ -150,7 +194,7 @@ void changeAttributeAcces(){
 
     int result;
     //
-    result= chmod("/home/ilya-kulakov/WorkSpace/testfile",S_IREAD|S_IWRITE);
+    result= chmod(readFilePath(),S_IREAD|S_IWRITE);
     if (result==-1)
         perror("can't change file mode");
 }
@@ -159,12 +203,12 @@ void changeAttributeAcces(){
 void setFileTime(){
     struct stat testfile;
     struct utimbuf new_times;
-
-    stat("/home/ilya-kulakov/WorkSpace/testfile", &testfile);
+    char *path=readFilePath();
+    stat(path, &testfile);
 
     new_times.actime = testfile.st_atime - 10*72008; // тут  нужно задавать насколько секунд +/- изменить время.
     new_times.modtime = time(NULL);
-    utime("/home/ilya-kulakov/WorkSpace/testfile", &new_times);
+    utime(path, &new_times);
 
 
 }
