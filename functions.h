@@ -20,7 +20,6 @@
 
 bool checkCharPathValid(char *path) {
     char restrictedChar[] = "\|*:?><\"";
-    printf("%s%d", "size: ", sizeof(path));
     for (int i = 0; i < strlen(path); ++i) {
         for (int j = 0; j < strlen(restrictedChar); ++j) {
             if (path[i] == restrictedChar[j])
