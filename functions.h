@@ -34,6 +34,7 @@ char *readFilePath() {
     char *path = (char *) malloc(1);
     int i = 0;
     bool isFirst = true;
+    printf("Введите путь: ");
     scanf("%c", &path[i]);
     if (path[i] == '\n')
         //очистка лишнего символа из stdin
@@ -52,12 +53,11 @@ char *readFilePath() {
     }
     path[i] = '\0';
     printf("inputed path: %s\n", path);
-    if (checkCharPathValid(path))
-        return path;
-    else {
+    if (!checkCharPathValid(path)){
         free(path);
         return nullptr;
     }
+    return path;
 }
 
 void showDiscs(){
@@ -100,11 +100,12 @@ void showDiscs(){
 void createFile(){
     char info[50];
     int fdr;
-    int rc = mknod(readFilePath(),'b',0);
+    char *path=readFilePath();
+    int rc = mknod(path,'b',0);
     if(rc<0) {
         perror("Error in mknod");
     }
-    fdr=open(readFilePath(),O_RDONLY);
+    fdr=open(path,O_RDONLY);
     read(fdr,info,50);
   //  printf("\n Received message=%s",info);
     printf("\nDone\n");
